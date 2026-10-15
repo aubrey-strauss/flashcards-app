@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f5f1" />
+    <meta
+      name="description"
+      content="A calm, simple place to create flashcards and study at your own pace."
+    />
+    <title>Recall — Flashcards</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Recall home">
+          <span class="brand-mark" aria-hidden="true">r</span>
+          <span>recall<span class="brand-period">.</span></span>
+        </a>
+        <div class="topbar-actions">
+          <div class="topbar-note"><span class="status-dot"></span> Your study space</div>
+          <button id="add-deck-header" class="button button-primary" type="button">
+            <span aria-hidden="true">＋</span> New deck
+          </button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Deck navigation">
+          <div class="sidebar-heading">
+            <span class="eyebrow">LIBRARY</span>
+            <span id="deck-total" class="deck-total">0</span>
+          </div>
+          <nav id="deck-list" class="deck-list" aria-label="Flashcard decks"></nav>
+          <button id="add-deck" class="new-deck-button" type="button">
+            <span aria-hidden="true">＋</span> New deck
+          </button>
+          <div class="sidebar-footer">
+            <span class="footer-spark" aria-hidden="true">✳</span>
+            <p>Small sessions build<br />lasting memories.</p>
+          </div>
+        </aside>
+
+        <main id="main-content" class="main-content" tabindex="-1">
+          <section id="deck-view" aria-labelledby="deck-title">
+            <div class="page-intro">
+              <div class="page-copy">
+                <span class="eyebrow">YOUR COLLECTION</span>
+                <h1 id="deck-title">Pick a deck to begin</h1>
+                <p id="deck-description">Make space for the things you want to remember.</p>
+              </div>
+              <div id="deck-options" class="deck-options" hidden>
+                <button id="deck-menu" class="icon-button deck-menu" type="button" aria-label="Deck options" aria-haspopup="true" aria-expanded="false" aria-controls="deck-actions-menu">
+                  <span aria-hidden="true">•••</span>
+                </button>
+                <div id="deck-actions-menu" class="deck-actions-menu" hidden>
+                  <button id="edit-deck" type="button">Edit deck</button>
+                  <button id="delete-deck" type="button">Delete deck</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="deck-toolbar" class="deck-toolbar" hidden>
+              <div class="deck-stats">
+                <span class="stat-icon" aria-hidden="true">▤</span>
+                <span id="card-count">0 cards</span>
+              </div>
+              <label class="search-box toolbar-search">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <span class="visually-hidden">Search cards in this deck</span>
+                <input id="card-search" type="search" placeholder="Search cards..." autocomplete="off" />
+                <kbd>/</kbd>
+              </label>
+              <div class="toolbar-actions">
+                <button id="study-button" class="button button-primary" type="button">
+                  <span aria-hidden="true">▷</span> Study deck
+                </button>
+                <button id="deck-shuffle" class="button button-secondary" type="button">
+                  <span aria-hidden="true">⤨</span> Shuffle
+                </button>
+                <button id="add-card" class="button button-secondary" type="button">
+                  <span aria-hidden="true">＋</span> New Card
+                </button>
+              </div>
+            </div>
+
+            <div id="cards-section" class="cards-section" hidden>
+              <div class="section-heading">
+                <div>
+                  <h2>Your cards</h2>
+                  <p>Keep your notes short and memorable.</p>
+                </div>
+                <span id="search-count" class="search-count" aria-live="polite"></span>
+              </div>
+              <div id="card-list" class="card-list"></div>
+            </div>
+
+            <div id="empty-state" class="empty-state" hidden>
+              <span class="empty-illustration" aria-hidden="true">✳</span>
+              <h2 id="empty-title">Start your first deck</h2>
+              <p id="empty-description">Create a deck for a subject you want to learn.</p>
+              <button id="empty-action" class="button button-primary" type="button">Create a deck</button>
+            </div>
+          </section>
+
+          <section id="study-view" class="study-view" aria-labelledby="study-title" hidden>
+            <div class="study-header">
+              <button id="exit-study" class="text-button" type="button">
+                <span aria-hidden="true">←</span> Back to deck
+              </button>
+              <div class="study-deck-label">
+                <span class="status-dot"></span>
+                <span id="study-deck-name"></span>
+              </div>
+              <button id="shuffle-button" class="button button-secondary shuffle-button" type="button">
+                <span aria-hidden="true">⤨</span> Shuffle
+              </button>
+            </div>
+            <div class="study-progress-row">
+              <span id="study-progress-label">Card 1 of 1</span>
+              <span id="study-progress-percent">0%</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Study progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="progress-fill"></span>
+            </div>
+            <div class="study-center">
+              <span class="eyebrow">TAKE YOUR TIME</span>
+              <h1 id="study-title">What do you know?</h1>
+              <button id="flashcard" class="flashcard" type="button" aria-label="Flashcard. Press Enter or Space to reveal the answer.">
+                <span class="flashcard-inner">
+                  <span id="flashcard-front" class="flashcard-face flashcard-face-front">
+                    <span id="flashcard-front-side" class="flashcard-side">FRONT</span>
+                    <span id="flashcard-front-text" class="flashcard-text"></span>
+                    <span class="flip-hint"><span aria-hidden="true">↻</span> Click or press Enter to flip</span>
+                  </span>
+                  <span id="flashcard-back" class="flashcard-face flashcard-face-back" aria-hidden="true">
+                    <span id="flashcard-back-side" class="flashcard-side">BACK</span>
+                    <span id="flashcard-back-text" class="flashcard-text"></span>
+                    <span class="flip-hint"><span aria-hidden="true">↻</span> Click or press Enter to see the prompt</span>
+                  </span>
+                </span>
+              </button>
+              <div class="study-controls">
+                <button id="previous-card" class="round-button" type="button" aria-label="Previous card">
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button id="flip-button" class="button button-secondary flip-button" type="button" aria-pressed="false">
+                  <span aria-hidden="true">↻</span> Flip card
+                </button>
+                <span class="keyboard-hint"><kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>Space</kbd> flip</span>
+                <button id="next-card" class="round-button" type="button" aria-label="Next card">
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+                    </div>
+                  </section>
+                </main>
+              </div>
+              <footer class="app-footer">
+                Study tip: use <kbd>Space</kbd> to flip and <kbd>←</kbd> <kbd>→</kbd> to move between cards.
+              </footer>
+    </div>
+
+    <dialog id="form-dialog" class="form-dialog" aria-labelledby="dialog-title">
+      <form id="item-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <span id="dialog-eyebrow" class="eyebrow">NEW DECK</span>
+            <h2 id="dialog-title">Create a deck</h2>
+          </div>
+          <button id="close-dialog" class="icon-button" type="button" aria-label="Close dialog">×</button>
+        </div>
+        <label id="name-field" class="form-field" for="item-name">
+          <span>Deck name</span>
+          <input id="item-name" name="name" maxlength="80" required placeholder="e.g. Spanish basics" />
+        </label>
+        <label id="front-field" class="form-field" for="item-front" hidden>
+          <span>Front</span>
+          <textarea id="item-front" name="front" rows="3" maxlength="500" placeholder="The question or prompt"></textarea>
+        </label>
+        <label id="back-field" class="form-field" for="item-back" hidden>
+          <span>Back</span>
+          <textarea id="item-back" name="back" rows="3" maxlength="500" placeholder="The answer or explanation"></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button id="cancel-dialog" class="button button-secondary" type="button">Cancel</button>
+          <button id="save-item" class="button button-primary" type="submit">Create deck</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="live-region" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
